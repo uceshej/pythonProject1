@@ -57,7 +57,7 @@ def point_list():
 
 def outside_mbr():
     p=point_list()
-    print(p)
+
     xmax = mbr()[0][0]
     xmin = mbr()[0][1]
     ymax = mbr()[1][0]
@@ -74,37 +74,127 @@ def outside_mbr():
 
 def show_polygon():
     m=mbr()
-    print(m)
     p=plot_polygon()
     plotter.add_polygon(p[1],p[2])
     plt.plot(m[0],m[1])
 
 
-
-
-point_polygon=plot_polygon()[1:]
-print(point_polygon)
-
-point_inmbr=outside_mbr()[2]
-
-point=point_list()
-for i in range(len(point_inmbr)):
-    x=point_inmbr[i][1]
-    y=point_inmbr[i][2]
-    id=point_inmbr[i][0]
-    for n in range(len(point_polygon[0])-1):
-        x1=point_polygon[0][n]
-        y1=point_polygon[1][n]
-        x2=point_polygon[0][n+1]
-        y2=point_polygon[1][n+1]
-        print(x1,y1,x2,y2)
-        if (x==x1 and y==y1) or (x==x2 and y==y2):
-            point.append('boundary')
-            point_boundary.append(point)
-
-
-
-
-
 #
-#
+def rca():
+    point_polygon=plot_polygon()[1:]
+
+    p=outside_mbr()
+    print(p)
+    for i in range(len(p[0])):
+        x=p[1][i]
+        y=p[2][i]
+        id=p[0][i]
+        crosstime=0
+        for n in range(len(point_polygon[0])-1):
+            x1=point_polygon[0][n]
+            y1=point_polygon[1][n]
+            x2=point_polygon[0][n+1]
+            y2=point_polygon[1][n+1]
+            if p[3][i]!= 'outside':
+
+                if y1==y2==y and x1==x2==x:
+                    p[3][i]='boundary'
+                elif x==x1==x2 and (y1<y<y2 or y2<y<y1):
+                    p[3][i]='boundary'
+                elif y==y1==y2 and (x1<x<x2 or x2<x<x1):
+                    p[3][i]='boundary'
+                elif y1<=y<y2 or y2<=y<y1:
+                    inter=(y-y1)*(x2-x1)/(y2-y1)+x1
+                    if inter==x:
+                        p[3][i]='boundary'
+                    elif inter>
+
+
+
+
+    return p
+p=rca()
+print(p)
+
+
+def draw():
+    p=rca()
+    print(p)
+    list_id=[]
+    list_x=[]
+    list_y=[]
+    list_lo=[]
+    for i in range(len(p[0])):
+        id=p[0][i]
+        x=p[1][i]
+        y=p[2][i]
+        location=p[3][i]
+        list_id.append(id)
+        list_x.append(x)
+        list_y.append(y)
+        list_lo.append(location)
+    print(list_lo)
+    plotter.add_point(list_x,list_y,list_lo)
+    plt.show()
+
+
+        #     elif x==x1==x2:
+        #         if y1<y<y2 or y2<y<y1:
+        #             p[3][i]="boundary"
+        #     elif y==y1==y1:
+        #         if x1<x<x2 or x2<x<x1:
+        #             p[3][i]='boundary'
+        #     elif y1<y<y2 or y2<y<y1:
+        #         cross=(y-y1)*(x2-x1)/(y2-y1)+x1
+        #         if cross>x:
+        #             cross_time+=1
+        #         elif cross==x:
+        #             p[3][1]='boundary'
+        # if cross_time%2!=0 and p[3][i]!='boundary':
+        #     p[3][i]='inside'
+        # elif cross_time%2==0 and p[3][i]=='boundary':
+        #     p[3][i]='outside'
+    # return p
+
+# p=rca()
+# listx=[]
+# listy=[]
+# listid=[]
+# listl=[]
+# for i in range(len(p[0])):
+#     id=p[0][i]
+#     x=p[1][i]
+#     y=p[2][i]
+#     l=p[3][i]
+#     listx.append(x)
+#     listy.append(y)
+#     listid.append(id)
+#     listl.append(l)
+# L=[listx,listy,listid,listl]
+# plotter.add_polygon(L[1],L[2])
+
+# def class_points():
+#     p=rca()
+#     print(p)
+#     list_b=[]
+#     list_o=[]
+#     list_i=[]
+#     plot_b_x=[]
+#     plot_b_y=[]
+#     for i in range(len(p[0])):
+#         point = (p[0][i], p[1][i], p[2][i],p[3][i])
+#         if p[3][i]=='boundary':
+#             list_b.append(point)
+#             plot_b_x
+#         elif p[3][i]=='outside':
+#             list_o.append(point)
+#         elif p[3][i]=='inside':
+#             list_i.append(point)
+#     return list_b,list_o,list_i
+
+
+
+
+
+
+
