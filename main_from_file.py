@@ -2,38 +2,141 @@ import matplotlib.pyplot as plt
 from plotter import Plotter
 plotter = Plotter()
 
-class Geography:
-    def __init__(self,name):
-        self.name=name
-    def get_name(self):
-        return self.name
+def plot_polygon():
+    with open('polygon.csv','r') as f:
+        plot=f.readlines()[1:]
+        polygon_x_all=[]
+        polygon_y_all=[]
+        polygon_id_all=[]
+        for row in plot:
+            each_rows=row.strip('\n')
+            each_row=each_rows.split(',')
+            polygon_id=each_row[0]
+            polygon_x=each_row[1]
+            polygon_y=each_row[2]
+            polygon_id_all.append(polygon_id)
+            polygon_x_all.append(float(polygon_x))
+            polygon_y_all.append(float(polygon_y))
+    return polygon_id_all,polygon_x_all,polygon_y_all
 
-class Point(Geography):
-    def __init__(self,name,x,y,location='')
-        super().__init__(name)
-        self.__x=float(x)
-        self.__y=float(y)
-        self.location=location
-    def get_x(self):
-        return self.__x
-    def get_y(self):
-        return self.__y
-    def get_location(self):
-        return self.location
+def mbr():
+    p=plot_polygon()
+    a=p[1]
+    b=p[2]
+    xmax=max(a)
+    xmin=min(a)
+    ymax=max(b)
+    ymin=min(b)
+    return [xmax,xmin,xmin,xmax,xmax],[ymax,ymax,ymin,ymin,ymax]
+
+def point_list():
+
+    with open('input.csv','r') as f:
+        plot1=f.readlines()[1:]
+        point_x_all=[]
+        point_y_all=[]
+        point_id_all=[]
+        location=[]
+        for row1 in plot1:
+            each_rows1=row1.strip('\n')
+            each_row1=each_rows1.split(',')
+            point_id=each_row1[0]
+            point_x=each_row1[1]
+            point_y=each_row1[2]
+            point_id_all.append(point_id)
+            point_x_all.append(float(point_x))
+            point_y_all.append(float(point_y))
+            location.append('null')
+    return [point_id_all,point_x_all,point_y_all,location]
+
+def outside_mbr():
+    p=point_list()
+
+    xmax = mbr()[0][0]
+    xmin = mbr()[0][1]
+    ymax = mbr()[1][0]
+    ymin = mbr()[1][2]
+    for i in range(len(point_list()[1])):
+        xi=p[1][i]
+        yi=p[2][i]
+        if xi < xmin or xi > xmax or yi < ymin or yi > ymax:
+            p[3][i]='outside'
+        else:
+            p[3][i]='inside'
+    return p
+
+def show_polygon():
+    m=mbr()
+    p=plot_polygon()
+    plotter.add_polygon(p[1],p[2])
+    plt.plot(m[0],m[1])
 
 
 
-class Polygen(Geography):
-    def __init__(self,name,points):
-        super().__init__(name)
-        self.__points=points
+def rca():
+    point_polygon=plot_polygon()[1:]
 
-class Line(Geogarphy):
-    def __init__(self,name,point1,point2):
-        super().__init__(name)
-        self.__point1=point1
-        self.__point2=point2
-    def get_point1(self):
-        return self.__point1
-    def get_
+    p=outside_mbr()
+    print(p)
+
+    for i in range(len(p[0])):
+        x=p[1][i]
+        y=p[2][i]
+        id=p[0][i]
+        crosstime = 0
+        for n in range(len(point_polygon[0])-1):
+            x1=point_polygon[0][n]
+            y1=point_polygon[1][n]
+            x2=point_polygon[0][n+1]
+            y2=point_polygon[1][n+1]
+            if p[3][i]== 'inside':
+
+                if y1==y2==y and x1==x2==x:
+                    p[3][i]='boundary'
+                elif x==x1==x2 and (y1<y<y2 or y2<y<y1):
+                    p[3][i]='boundary'
+                elif y==y1==y2 and (x1<x<x2 or x2<x<x1):
+                    p[3][i]='boundary'
+                elif y1<=y<y2 or y2<=y<y1:
+                    inter=(y-y1)*(x2-x1)/(y2-y1)+x1
+                    if inter==x:
+                        p[3][i]='boundary'
+
+    return p
+
+
+def show():
+    p=rca()
+    show_polygon()
+    for i in range(len(p[0])):
+        plotter.add_point(p[1][i],p[2][i],p[3][i])
+    plotter.show()
+
+
+
+show()
+# print(p)
+# list_id=[]
+# list_x=[]
+# list_y=[]
+# list_lo=[]
+# for i in range(len(p[0])):
+#     id=p[0][i]
+#     x=p[1][i]
+#     y=p[2][i]
+#     location=p[3][i]
+#     list_id.append(id)
+#     list_x.append(x)
+#     list_y.append(y)
+#     list_lo.append(location)
+# print(list_lo)
+# plotter.add_point(list_x,list_y,location)
+# plt.show()
+
+
+
+
+# if __name__=='__main__':
+#     show_polygon()
+#     plt.show()
 
