@@ -41,6 +41,7 @@ def point_list():
         point_x_all=[]
         point_y_all=[]
         point_id_all=[]
+        location=[]
         for row1 in plot1:
             each_rows1=row1.strip('\n')
             each_row1=each_rows1.split(',')
@@ -50,47 +51,26 @@ def point_list():
             point_id_all.append(point_id)
             point_x_all.append(float(point_x))
             point_y_all.append(float(point_y))
+            location.append('null')
+    return [point_id_all,point_x_all,point_y_all,location]
 
-    return  point_id_all,point_x_all,point_y_all,'null'
 
 def outside_mbr():
     p=point_list()
-    id=point_list()[0]
-    x=point_list()[1]
-    y=point_list()[2]
-    outside_mbr_list=[]
-    outside_m=[]
-    inside_mbr_list=[]
-    inside_m=[]
-    listx=[]
-    listy=[]
-    listj=[]
-    listk=[]
+    print(p)
     xmax = mbr()[0][0]
     xmin = mbr()[0][1]
     ymax = mbr()[1][0]
     ymin = mbr()[1][2]
-    point=[]
+    for i in range(len(point_list()[1])):
+        xi=p[1][i]
+        yi=p[2][i]
+        if xi < xmin or xi > xmax or yi < ymin or yi > ymax:
+            p[3][i]='outside'
+    return p
 
-    for i in range(len(x)):
-        xi=x[i]
-        yi=y[i]
-        point_id=id[i]
 
-        if xi<xmin or xi>xmax or yi<ymin or yi>ymax:
-            point=[point_id,xi,yi,'outside']
-            listx.append(xi)
-            listy.append(yi)
-            outside_mbr_list.append(point)
-        else:
-            listj.append(xi)
-            listk.append(yi)
-            point1=[point_id,xi,yi,"inside_mbr"]
-            inside_mbr_list.append(point1)
-        outside_m=[listx,listy]
-        inside_m=[listj,listk]
 
-    return outside_m,outside_mbr_list,inside_mbr_list,inside_m
 
 def show_polygon():
     m=mbr()
@@ -99,91 +79,32 @@ def show_polygon():
     plotter.add_polygon(p[1],p[2])
     plt.plot(m[0],m[1])
 
-def show_outside_mbr():
-    p=outside_mbr()[0]
-    plotter.add_point(p[0],p[1],'outside')
-
-def show():
-    show_polygon()
-    show_outside_mbr()
-    plt.show()
-
-# with open('polygon.csv', 'r') as f:
-#     plot = f.readlines()[1:]
-#     line_point=[]
-#     line_list=[]
-#     for row in plot:
-#         each_rows = row.strip('\n')
-#         each_row = each_rows.split(',')
-#         line_point=[float(each_row[1]),float(each_row[2])]
-#         line_list.append(line_point)
 
 
-# def polygon_lines():
+
 point_polygon=plot_polygon()[1:]
 print(point_polygon)
-point_list=[]
-for i in range(len(point_polygon[0])):
-    point1=(point_polygon[0][i],point_polygon[1][i])
-    point_list.append(point1)
-print(point_list)
+
 point_inmbr=outside_mbr()[2]
-print(point_inmbr)
-point_boundary=[]
+
+point=point_list()
 for i in range(len(point_inmbr)):
     x=point_inmbr[i][1]
     y=point_inmbr[i][2]
     id=point_inmbr[i][0]
-    point=[id,x,y]
-#     for n in range(len(point_line[0])):
-#         x1=point_line[0][n]
-#         y1=point_line[1][n]
-#         x2=point_line[0][n+1]
-#         y2=point_line[1][n+1]
-#         if (x==x1 and y==y1) or (x==x2 and y==y2):
-#             point.append('boundary')
-#             point_boundary.append(point)
-# print(point_boundary)
+    for n in range(len(point_polygon[0])-1):
+        x1=point_polygon[0][n]
+        y1=point_polygon[1][n]
+        x2=point_polygon[0][n+1]
+        y2=point_polygon[1][n+1]
+        print(x1,y1,x2,y2)
+        if (x==x1 and y==y1) or (x==x2 and y==y2):
+            point.append('boundary')
+            point_boundary.append(point)
+
+
 
 
 
 #
-#     for row in plot:
-#         each_rows=row.strip('\n')
-#         each_row=each_rows.split(',')
-#         point_id=each_row[0]
-#         point_x=each_row[1]
-#         point_y=each_row[2]
-#         point=[point_id,float(point_x),float(point_y),'null']
-#         x=point[1]
-#         y=point[2]
-#         #
-#         count=0
-#         for i in range(len(line_list)-1):
-#             line=line_list[i:i+2]
-#             x1=line[0][0]
-#             x2=line[0][1]
-#             y1=line[1][0]
-#             y2=line[1][1]
-#             if (x==x1 and y==y1) or (x==x2 and y==y2):
-#                 point[3]=('boundary')
-#                 lo_boundary.append(point)
-#             elif y1==y2==y:
-#                 if x1<=x<=x2 or x2<=x<=x1:
-#                     point[3]=('boundary')
-#                     lo_boundary.append(point)
-#             elif x1==x2==x:
-#                 if y1<=y<=y2 or y2<=y<=y1:
-#                     point[3]=('boundary')
-#                     lo_boundary.append(point)
-#             elif y1<=y<y2 or y2<=y<y1:
-#                 cross=(y-y1)*(x2-x1)/(y2-y1)+x1
-#                 if cross>x:
-#                     count+=1
-#         if count%2!=0 and point[3]!='boundary':
-#             point[3]=('inside')
-#             lo_inside.append(point)
-#         elif count%2==0 and point[3]!='boundary':
-#             point[3]=('outside')
-#             lo_outside.append(point)
-#         print(point)
+#
