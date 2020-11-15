@@ -53,42 +53,47 @@ def point_list():
 
     return  point_id_all,point_x_all,point_y_all,'null'
 
-# def oustside_mbr():
-p=point_list()
-id=point_list()[0]
-x=point_list()[1]
-y=point_list()[2]
-outside_mbr=[]
-xmax = max(x)
-xmin = min(x)
-ymax = max(y)
-ymin = min(y)
+def outside_mbr():
+    p=point_list()
+    id=point_list()[0]
+    x=point_list()[1]
+    y=point_list()[2]
+    outside_mbr_list=[]
+    outside_m=[]
+    listx=[]
+    listy=[]
+    xmax = mbr()[0][0]
+    xmin = mbr()[0][1]
+    ymax = mbr()[1][0]
+    ymin = mbr()[1][2]
+    point=[]
 
-for i in range(len(x)):
-    xi=x[i]
-    yi=y[i]
-    point_id=id[i]
+    for i in range(len(x)):
+        xi=x[i]
+        yi=y[i]
+        point_id=id[i]
 
-    if xi < xmin or xi > xmax or yi < ymin or yi > ymax:
-        outside_mbr.append(point_id,xi,yi,'outside')
-    print(outside_mbr)
+        if xi<xmin or xi>xmax or yi<ymin or yi>ymax:
+            point=[point_id,xi,yi,'outside']
+            listx.append(xi)
+            listy.append(yi)
+            outside_mbr_list.append(point)
+        outside_m=[listx,listy]
 
+    return outside_m,outside_mbr_list
 
-        # if i<xmin or i>xmax or j<ymin or j>ymax:
-        #     outside_mbr.append()
-
-#     polygon_list=point_list_polygon
-#
-#
-# plot_polygon()
-# outside()
-# print(polygon_list)
-# plt.show()
 def show_polygon():
     m=mbr()
     print(m)
     p=plot_polygon()
     plotter.add_polygon(p[0],p[1])
     plt.plot(m[0],m[1])
-    plt.show()
 
+def show_outside_mbr():
+    p=outside_mbr()[0]
+    plotter.add_point(p[0],p[1],'outside')
+
+def show():
+    show_polygon()
+    show_outside_mbr()
+    plt.show()
