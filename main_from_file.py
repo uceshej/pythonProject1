@@ -89,18 +89,27 @@ def rca():
             y1=point_polygon[1][n]
             x2=point_polygon[0][n+1]
             y2=point_polygon[1][n+1]
-            if p[3][i]== 'inside':
+            # if p[3][i]== 'inside':
 
-                if y1==y2==y and x1==x2==x:
+            if y1==y2==y and x1==x2==x:
+                p[3][i]='boundary'
+            elif (x1==x and y==y1) or (x2==x and y2==y):
+                p[3][i]='boundary'
+            elif x==x1==x2 and (y1<y<y2 or y2<y<y1):
+                p[3][i]='boundary'
+            elif y==y1==y2 and (x1<x<x2 or x2<x<x1):
+                p[3][i]='boundary'
+            elif y1<=y<y2 or y2<=y<y1:
+                inter=(y-y1)*(x2-x1)/(y2-y1)+x1
+                if inter==x:
                     p[3][i]='boundary'
-                elif x==x1==x2 and (y1<y<y2 or y2<y<y1):
-                    p[3][i]='boundary'
-                elif y==y1==y2 and (x1<x<x2 or x2<x<x1):
-                    p[3][i]='boundary'
-                elif y1<=y<y2 or y2<=y<y1:
-                    inter=(y-y1)*(x2-x1)/(y2-y1)+x1
-                    if inter==x:
-                        p[3][i]='boundary'
+                elif inter>x:
+                    crosstime+=1
+        print(crosstime)
+        if crosstime%2==0 and p[3][i]!='boundary':
+            p[3][i]='outside'
+        elif crosstime%2!=0 and p[3][i]!='boundary':
+            p[3][i]=='inside'
 
     return p
 
@@ -112,31 +121,12 @@ def show():
         plotter.add_point(p[1][i],p[2][i],p[3][i])
     plotter.show()
 
-
+read
 
 show()
-# print(p)
-# list_id=[]
-# list_x=[]
-# list_y=[]
-# list_lo=[]
-# for i in range(len(p[0])):
-#     id=p[0][i]
-#     x=p[1][i]
-#     y=p[2][i]
-#     location=p[3][i]
-#     list_id.append(id)
-#     list_x.append(x)
-#     list_y.append(y)
-#     list_lo.append(location)
-# print(list_lo)
-# plotter.add_point(list_x,list_y,location)
-# plt.show()
 
 
 
 
-# if __name__=='__main__':
-#     show_polygon()
-#     plt.show()
+
 
