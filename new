@@ -1,0 +1,94 @@
+import matplotlib.pyplot as plt
+from plotter import Plotter
+plotter = Plotter()
+
+def plot_polygon():
+    with open('polygon.csv','r') as f:
+        plot=f.readlines()[1:]
+        polygon_x_all=[]
+        polygon_y_all=[]
+        polygon_id_all=[]
+        for row in plot:
+            each_rows=row.strip('\n')
+            each_row=each_rows.split(',')
+            polygon_id=each_row[0]
+            polygon_x=each_row[1]
+            polygon_y=each_row[2]
+            polygon_id_all.append(polygon_id)
+            polygon_x_all.append(float(polygon_x))
+            polygon_y_all.append(float(polygon_y))
+    return polygon_x_all,polygon_y_all
+
+
+        # plotter.add_polygon(list(polygon_x_all), list(polygon_y_all))
+
+def mbr():
+    p=plot_polygon()
+    a=p[0]
+    b=p[1]
+    xmax=max(a)
+    xmin=min(a)
+    ymax=max(b)
+    ymin=min(b)
+    return [xmax,xmin,xmin,xmax,xmax],[ymax,ymax,ymin,ymin,ymax]
+
+
+
+def point_list():
+
+    with open('input.csv','r') as f:
+        plot1=f.readlines()[1:]
+        point_x_all=[]
+        point_y_all=[]
+        point_id_all=[]
+        for row1 in plot1:
+            each_rows1=row1.strip('\n')
+            each_row1=each_rows1.split(',')
+            point_id=each_row1[0]
+            point_x=each_row1[1]
+            point_y=each_row1[2]
+            point_id_all.append(point_id)
+            point_x_all.append(float(point_x))
+            point_y_all.append(float(point_y))
+
+    return  point_id_all,point_x_all,point_y_all,'null'
+
+# def oustside_mbr():
+p=point_list()
+id=point_list()[0]
+x=point_list()[1]
+y=point_list()[2]
+outside_mbr=[]
+xmax = max(x)
+xmin = min(x)
+ymax = max(y)
+ymin = min(y)
+
+for i in range(len(x)):
+    xi=x[i]
+    yi=y[i]
+    point_id=id[i]
+
+    if xi < xmin or xi > xmax or yi < ymin or yi > ymax:
+        outside_mbr.append(point_id,xi,yi,'outside')
+    print(outside_mbr)
+
+
+        # if i<xmin or i>xmax or j<ymin or j>ymax:
+        #     outside_mbr.append()
+
+#     polygon_list=point_list_polygon
+#
+#
+# plot_polygon()
+# outside()
+# print(polygon_list)
+# plt.show()
+def show_polygon():
+    m=mbr()
+    print(m)
+    p=plot_polygon()
+    plotter.add_polygon(p[0],p[1])
+    plt.plot(m[0],m[1])
+    plt.show()
+
