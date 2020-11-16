@@ -29,7 +29,6 @@ def mbr():    #get the Minimum Bounding Rectangle of this polygon
     return [xmax,xmin,xmin,xmax,xmax],[ymax,ymax,ymin,ymin,ymax]
 
 def point_list():    #get the input test points
-
     with open('input.csv','r') as f:
         plot1=f.readlines()[1:]
         point_x_all=[]
