@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from plotter import Plotter
-plotter = Plotter()
+
 
 def plot_polygon():
     with open('polygon.csv','r') as f:
@@ -51,7 +51,6 @@ def point_list():
 
 def outside_mbr():
     p=point_list()
-
     xmax = mbr()[0][0]
     xmin = mbr()[0][1]
     ymax = mbr()[1][0]
@@ -70,7 +69,6 @@ def show_polygon():
     p=plot_polygon()
     plotter.add_polygon(p[1],p[2])
     plt.plot(m[0],m[1])
-
 
 
 def rca():
@@ -112,21 +110,43 @@ def rca():
             p[3][i]=='inside'
 
     return p
+#
+#
+# def show():
+#     p=rca()
+#     show_polygon()
+#     for i in range(len(p[0])):
+#         plotter.add_point(p[1][i],p[2][i],p[3][i])
 
 
-def show():
+def output():
     p=rca()
-    show_polygon()
+    with open('output','w') as output:
+        output.write('ID'+','+'category'+'\n')
+        for i in range(len(p[0])):
+            output.write(p[0][i]+','+p[3][i]+'\n')
+
+def main():
+    plotter = Plotter()
+    print('read polygon.csv')
+    plot_polygon()
+    print('read input.csv')
+    point_list()
+    print('categorize points')
+    rca()
+    print('write output.csv')
+    output()
+    print('plot polygon and points')
+    m = mbr()
+    p = plot_polygon()
+    plotter.add_polygon(p[1], p[2])
+    plt.plot(m[0], m[1])
+    p = rca()
     for i in range(len(p[0])):
-        plotter.add_point(p[1][i],p[2][i],p[3][i])
+        plotter.add_point(p[1][i], p[2][i], p[3][i])
+
     plotter.show()
 
-read
 
-show()
-
-
-
-
-
-
+if __name__ == '__main__':
+    main()
