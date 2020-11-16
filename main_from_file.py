@@ -86,7 +86,6 @@ def rca():
             y1=point_polygon[1][n]
             x2=point_polygon[0][n+1]
             y2=point_polygon[1][n+1]
-            # if p[3][i]== 'inside':
 
             if y1==y2==y and x1==x2==x:
                 p[3][i]='boundary'
@@ -109,13 +108,7 @@ def rca():
             p[3][i]=='inside'
 
     return p
-#
-#
-# def show():
-#     p=rca()
-#     show_polygon()
-#     for i in range(len(p[0])):
-#         plotter.add_point(p[1][i],p[2][i],p[3][i])
+
 
 
 def output():
