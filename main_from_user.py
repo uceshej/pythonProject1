@@ -78,7 +78,7 @@ def main():
             point[2] = 'outside'
         elif crosstime % 2 != 0 and point[2] != 'boundary':
             point[2] == 'inside'
-
+    #draw polygon and points
     print("plot polygon and point")
     m = mbr()
     p = read_polygon()
