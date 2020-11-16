@@ -75,7 +75,6 @@ def rca():
     point_polygon=plot_polygon()[1:]
 
     p=outside_mbr()
-    print(p)
 
     for i in range(len(p[0])):
         x=p[1][i]
