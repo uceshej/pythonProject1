@@ -74,7 +74,6 @@ def main():
                 point[2] = 'boundary'
             elif inter > x:
                 crosstime += 1
-
         if crosstime % 2 == 0 and point[2] != 'boundary':
             point[2] = 'outside'
         elif crosstime % 2 != 0 and point[2] != 'boundary':
